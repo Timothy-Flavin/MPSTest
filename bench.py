@@ -54,8 +54,13 @@ class EnvPoolSB3Wrapper(VecEnv):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--job-id", type=int, required=True, help="Identifier for the job")
+    # Add device argument, defaulting to cuda
+    parser.add_argument("--device", type=str, default="cuda", choices=["cpu", "cuda"])
     args = parser.parse_args()
 
+    # ... [env setup remains the same] ...
+
+    
     num_envs = 64
     
     # 1. Initialize the native EnvPool C++ engine
@@ -73,7 +78,7 @@ def main():
         policy_kwargs=policy_kwargs,
         n_steps=64,
         batch_size=4096,
-        device="cuda",
+        device=args.device, # Pass the argument here
         verbose=0
     )
 
